@@ -12,17 +12,28 @@ namespace API
         {
             var builder = WebApplication.CreateBuilder(args);
             // Add services to the container.
+            var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+            builder.Services.AddCors(options =>
+                {
+                    options.AddPolicy(name: MyAllowSpecificOrigins,
+                                    policy =>
+                                    {
+                                        policy.WithOrigins("http://localhost:3002","https://localhost:3002")
+                                        .AllowAnyHeader()
+                                        .AllowAnyMethod();
+                                    });
+                });
 
             builder.Services.AddControllers();
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnecton")));
-           
+                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-         
 
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.MapControllers();
 
@@ -37,13 +48,13 @@ namespace API
             }
             catch (Exception ex)
             {
-                var logger= service.GetRequiredService<ILogger<Program>>();
+                var logger = service.GetRequiredService<ILogger<Program>>();
                 logger.LogError(ex, "An error occurred during migraiton.");
             }
 
             app.Run();
         }
 
-		
-	}
+
+    }
 }

@@ -24,8 +24,8 @@ namespace API.Controllers
         {
             var evt = await context.Events.FindAsync(id);
             if (evt == null) return NotFound();
-            return Ok(evt); 
-            
+            return Ok(evt);
+
         }
     }
 }
