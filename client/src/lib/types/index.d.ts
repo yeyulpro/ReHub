@@ -1,12 +1,12 @@
-export type Event = {
-  id: string
+export type Hub_Event = {
+  id?: string
   title: string
   date: string
   description: string
   category: string
-  isCancelled: boolean
+  isCancelled?: boolean
   city: string
   venue: string
-  latitude: number
-  longitude: number
+  latitude?: number
+  longitude?: number
 }
