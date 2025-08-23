@@ -1,5 +1,12 @@
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
-  margin: 0;
+  margin: 0 ;
   background-color: #f0f0f0;
+}
+
+.react-calendar {
+  width: 100% !important;
+  border: none !important;
 }

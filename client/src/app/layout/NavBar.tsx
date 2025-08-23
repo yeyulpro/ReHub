@@ -14,20 +14,21 @@ export default function NavBar() {
   return (
     <>
       <Box>
-        <AppBar position="static" sx={{ backgroundColor: "#FEFEFE" }}>
-          <Toolbar sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
+        <AppBar position="static" sx={{ backgroundColor: "#FEFEFE"  }}>
+          <Toolbar sx={{ display: "flex", gap: 3, flexWrap: "wrap"}}>
             <Box
+              component={NavLink}
+              to="/events"
               sx={{
                 display: "flex",
                 alignItems: "center",
                 flexGrow: 1,
+                textDecoration: "none",
               }}
             >
               <RoofingIcon sx={{ color: "#555555", mr: 2, fontSize: "3rem" }} />
               <Typography
                 variant="h4"
-                component={NavLink}
-                to="/"
                 sx={{ color: "#555555", mr: 2, textDecoration: "none" }}
               >
                 ReHub
@@ -35,7 +36,7 @@ export default function NavBar() {
               <Typography
                 variant="h6"
                 component={NavLink}
-                to="/"
+                to="/events"
                 sx={{ color: "#555555", textDecoration: "none" }}
               >
                 A Real Estate Hub for events, learning, and networking
@@ -47,18 +48,8 @@ export default function NavBar() {
             </Box>
             <Box>
               <MenuItem>
-                <Button
-                  size="large"
-                  sx={{ color: "#555555", fontSize: "1.1rem" }}
-                  component={NavLink} to={'/createEvent'}
-                >
-                  Create Event
-                </Button>
-                <Button
-                  size="large"
-                  sx={{ color: "#555555", fontSize: "1.1rem" }}
-                >
-                  Login
+                <Button size="medium" sx={{ color: "#555555" }}>
+                  user menu
                 </Button>
               </MenuItem>
             </Box>

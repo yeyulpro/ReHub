@@ -8,8 +8,8 @@ export default function MenuItemLink({children, to}:{children:ReactNode, to:stri
     <Typography
         component={NavLink}
         to={to}
-        sx={{fontsiz:"1.6rem", textTransform:'uppercase', fondWeight:'bold', textDecoration: "none",color:'#555555' ,'&.active':{
-            color:'#00BFFF'
+        sx={{fontsiz:"1.6rem", textTransform:'uppercase', fondWeight:'bold', textDecoration: "none",color:'#0e0d0dff' ,'&.active':{
+            color:'#033FFF'
         }}}
     >
         {children}
