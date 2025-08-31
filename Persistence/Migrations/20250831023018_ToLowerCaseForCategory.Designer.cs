@@ -11,8 +11,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250815003452_InitialCreation")]
-    partial class InitialCreation
+    [Migration("20250831023018_ToLowerCaseForCategory")]
+    partial class ToLowerCaseForCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
