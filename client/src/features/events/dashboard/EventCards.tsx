@@ -48,7 +48,7 @@ export default function EventCards({ event }: Props) {
             <Box sx={{ display: "flex", gap: 1 }}>
               <AccessTimeIcon />
               <Box>
-                <Typography variant="body2">{event.date}</Typography>
+                <Typography variant="body2">{new Date(event.date).toLocaleString()}</Typography>
               </Box>
             </Box>
             <Box sx={{ display: "flex", gap: 1 }}>

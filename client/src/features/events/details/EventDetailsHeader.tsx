@@ -1,6 +1,6 @@
 import { Card, CardMedia, Box, Typography, Button, Chip } from "@mui/material";
 import { NavLink } from "react-router";
-
+import { format } from "date-fns";
 import { Hub_Event } from "../../../lib/types";
 
 type Props = {
@@ -10,7 +10,9 @@ export default function EventDetailHeader({ event }: Props) {
   const isCancelled = false;
   const isHost = true;
   const isGoing = false;
-  // const loading = false;
+
+  const eventDate =
+    event.date instanceof Date ? event.date : new Date(event.date);
 
   return (
     <>
@@ -18,8 +20,7 @@ export default function EventDetailHeader({ event }: Props) {
         <CardMedia
           component="img"
           alt="green iguana"
-          image={`/images/${event.category}.jpg`}
-          sx={{}}
+          image={`/images/${event.category.toLowerCase()}.jpg`}
         />
         {isCancelled ? (
           <Chip
@@ -34,8 +35,8 @@ export default function EventDetailHeader({ event }: Props) {
               left: 40,
               top: 20,
               zIndex: 1000,
-              fontWeight:'bolder',
-              color:"#FFFF",
+              fontWeight: "bolder",
+              color: "#FFFF",
               backgroundColor: "#0079FF",
             }}
             label="Ongoing"
@@ -58,7 +59,7 @@ export default function EventDetailHeader({ event }: Props) {
               {event.title}
             </Typography>
             <Typography variant="subtitle1" sx={{ color: "#FFFF", pl: 2 }}>
-              {new Date(event.date).toLocaleString()}
+              {format(eventDate, "yyyy-MM-dd HH:mm")}
             </Typography>
             <Typography variant="subtitle2" sx={{ color: "#FFFF", pl: 2 }}>
               Hosted by Bob
@@ -116,7 +117,7 @@ export default function EventDetailHeader({ event }: Props) {
             ) : (
               !isCancelled &&
               (isGoing ? (
-                <Button                
+                <Button
                   size="large"
                   sx={{
                     color: "#c2bcf0ff",

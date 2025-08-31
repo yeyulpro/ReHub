@@ -20,7 +20,7 @@ export const useEvents = (id?: string) => {
   const { data: event, isLoading: isLoadingEvent } = useQuery({
     queryKey: ["events", id],
     queryFn: async () => {
-      const response = await agent.get<Hub_Event>(`events/${id}`);
+      const response = await agent.get<Hub_Event>(`events/${id}`);      
       return response.data
     },
     enabled: !!id
@@ -44,7 +44,7 @@ export const useEvents = (id?: string) => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["events"] });
-       navigate(`/events`)
+       navigate(`/events/${event?.id}`)
     }
   })
 

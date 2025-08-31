@@ -10,6 +10,7 @@ export default function HomePage() {
           height: "100vh",
           position: "relative",
           marginLeft: "-24px",
+          overflow: "hidden"
         }}
       >
         <video

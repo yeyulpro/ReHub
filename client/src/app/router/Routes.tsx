@@ -1,12 +1,12 @@
 import { createBrowserRouter } from "react-router";
 import App from "../layout/App";
-
 import HomePage from "../../features/home/HomePage";
 import EventDashboard from "../../features/events/dashboard/EventDashboard";
 import EventForm from "../../features/events/form/EventForm";
-
 import EventDetailPage from "../../features/events/details/EventDetailPage";
 import MainHome from "../layout/MainHome";
+import ErrorStatus from "../../features/errors/ErrorStatus";
+
 
 export const router = createBrowserRouter([
   {
@@ -23,6 +23,16 @@ export const router = createBrowserRouter([
       { path: "createEvent", element: <EventForm key={"create"} /> },
       { path: "manage/:id", element: <EventForm /> },
       { path: "about", element: <HomePage /> },
+     
+
     ],
   },
+ 
+      { path: "bad-request", element: <ErrorStatus /> },
+      { path: "unauthorized", element: <ErrorStatus /> },
+      { path: "forbidden", element: <ErrorStatus /> },
+      { path: "not-found", element: <ErrorStatus /> },
+      { path: "server-error", element: <ErrorStatus /> },      
+      { path: "*", element: <ErrorStatus /> },      
+
 ]);

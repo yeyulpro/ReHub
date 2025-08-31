@@ -9,6 +9,7 @@ import { useParams } from "react-router";
 export default function EventDetailPage() {
   const { id } = useParams();
   const { event, isLoadingEvent } = useEvents(id);
+
   if (isLoadingEvent) return <Typography> Loading...</Typography>;
   if (!event) return <Typography> Event not found</Typography>;
 
