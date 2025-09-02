@@ -1,22 +1,26 @@
-import {
-  AppBar,
-  Box,
-  Button,
-  MenuItem,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import RoofingIcon from "@mui/icons-material/Roofing";
 import { NavLink } from "react-router";
 import MenuItemLink from "../shared/components/MenuItemLink";
-import { toast } from "react-toastify";
+import WavingHandOutlinedIcon from "@mui/icons-material/WavingHandOutlined";
+import { useAccount } from "../../lib/hooks/useAccount";
+import UserMenu from "./UserMenu";
 
 export default function NavBar() {
+  const { currentUser } = useAccount();
+
   return (
     <>
       <Box>
         <AppBar position="static" sx={{ backgroundColor: "#FEFEFE" }}>
-          <Toolbar sx={{ display: "flex", gap: 3, flexWrap: "wrap" }}>
+          <Toolbar
+            sx={{
+              display: "flex",
+              gap: 3,
+              flexWrap: "wrap",
+              justifyContent: "space-around",
+            }}
+          >
             <Box
               sx={{
                 display: "flex",
@@ -47,23 +51,35 @@ export default function NavBar() {
                 A Real Estate Hub for events, learning, and networking
               </Typography>
             </Box>
-            <Box sx={{ display: "flex", gap: 6 }}>
-              <MenuItemLink to="/events">Events</MenuItemLink>
-              <MenuItemLink to="/createEvent">Create Events</MenuItemLink>
-            </Box>
-            <Box>
-              <MenuItem>
-                <Button size="medium" sx={{ color: "#555555" }}>
-                  user menu
-                </Button>
-                <Button
-                  size="medium"
-                  sx={{ color: "#555555" }}
-                  onClick={() => toast.success("Wow so easy!")}
-                >
-                  tostify test
-                </Button>
-              </MenuItem>
+            <Box
+              sx={{
+                textTransform: "uppercase",
+                display: "flex",
+                gap: 6,
+                justifyContent: "flex-end",
+                alignItems: "center",
+                color: "#555555",
+                flexGrow: 1,
+                fontWeight: "bold",
+              }}
+            >
+              <MenuItemLink to="/events">All Events</MenuItemLink>
+
+              {currentUser ? (
+                <>
+                  <Typography sx={{ fontWeight: 500 }}>
+                    Hello <WavingHandOutlinedIcon /> {currentUser.displayName}
+                  </Typography>
+                  <Button size="medium" sx={{ color: "#555555" }}>
+                    <UserMenu />
+                  </Button>
+                </>
+              ) : (
+                <Box sx={{ display: "flex", gap: 3, mr: 3 }}>
+                  <MenuItemLink to="/register">Register</MenuItemLink>
+                  <MenuItemLink to="/login">Login</MenuItemLink>
+                </Box>
+              )}
             </Box>
           </Toolbar>
         </AppBar>

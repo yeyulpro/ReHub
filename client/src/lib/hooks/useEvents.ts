@@ -3,18 +3,21 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Hub_Event } from "../types";
 import agent from "../api/agent";
 import { useNavigate } from "react-router";
+import { useAccount } from "./useAccount";
 
 
 export const useEvents = (id?: string) => {
   const navigate = useNavigate();
-
+  const {currentUser} =  useAccount();
   const queryClient = useQueryClient();
-  const { data: events, isPending } = useQuery({
+
+  const { data: events, isLoading } = useQuery({
     queryKey: ["events"],
     queryFn: async () => {
       const response = await agent.get<Hub_Event[]>("events");
       return response.data;
     },
+    enabled: !id && !!currentUser && location.pathname=='/events'
   });
 
   const { data: event, isLoading: isLoadingEvent } = useQuery({
@@ -23,7 +26,7 @@ export const useEvents = (id?: string) => {
       const response = await agent.get<Hub_Event>(`events/${id}`);      
       return response.data
     },
-    enabled: !!id
+    enabled:  !!id && !!currentUser && location.pathname==`/events/${id}`
   })
 
   const createEvent = useMutation({
@@ -64,7 +67,7 @@ export const useEvents = (id?: string) => {
 
   return {
     events,
-    isPending,
+    isLoading,
     updateEvent,
     deleteEvent,
     event,

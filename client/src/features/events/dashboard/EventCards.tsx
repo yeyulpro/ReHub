@@ -11,8 +11,6 @@ import { Hub_Event } from "../../../lib/types";
 import { Link } from "react-router";
 import { useEvents } from "../../../lib/hooks/useEvents";
 import Avatar from "@mui/material/Avatar";
-
-
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PlaceIcon from "@mui/icons-material/Place";
 
@@ -21,7 +19,7 @@ type Props = {
 };
 
 export default function EventCards({ event }: Props) {
-  const { deleteEvent, isPending } = useEvents();
+  const { deleteEvent, isLoading } = useEvents();
 
   return (
    
@@ -83,7 +81,7 @@ export default function EventCards({ event }: Props) {
                 onClick={() => {
                   if (event.id) deleteEvent.mutate(event.id);
                 }}
-                disabled={isPending}
+                disabled={isLoading}
                 variant="contained"
                color="error"
                sx={{mr:1, width:11,p:0.5}}

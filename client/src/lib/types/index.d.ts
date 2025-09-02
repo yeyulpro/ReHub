@@ -11,7 +11,14 @@ export type Hub_Event = {
   longitude: number;
 };
 
-type LocationIQSuggestion = {
+export type User ={
+  id:string
+  email:string
+  displayName: string
+  imageUrl?:string
+}
+
+export type LocationIQSuggestion = {
   place_id: string;
   osm_id: string;
   osm_type: string;
@@ -26,7 +33,7 @@ type LocationIQSuggestion = {
   display_address: string;
   address: LocationlQAddress;
 };
-type LocationIQAddress = {
+export type LocationIQAddress = {
   name: string;
   house_number: string;
   road: string;

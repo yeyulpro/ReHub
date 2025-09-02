@@ -3,9 +3,10 @@ import EventCards from "./EventCards";
 import { useEvents } from "../../../lib/hooks/useEvents";
 
 export default function DashboardList() {
-  const { events, isPending } = useEvents();
+  const { events, isLoading } = useEvents();
 
-  if(!events || isPending) return <Typography>Loading...</Typography>
+  if (isLoading) return <Typography>Loading...</Typography>;
+  if (!events) return <Typography>No event found.</Typography>;
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>

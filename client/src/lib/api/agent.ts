@@ -2,12 +2,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { router } from "../../app/router/Routes";
 
-const agent = axios.create({
+const agent = axios.create({   
   baseURL: import.meta.env.VITE_API_URL,
+  withCredentials:true
 });
 agent.interceptors.response.use(
   (response) => {
-    console.log("response received successfuly", response.data);
+    console.log("response received successfully", response.data);
     return response;
   },
   (error) => {

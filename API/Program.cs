@@ -26,21 +26,22 @@ namespace API
             var builder = WebApplication.CreateBuilder(args);
             // Add services to the container.
             var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
             builder.Services.AddCors(options =>
                 {
-                    options.AddPolicy(name: MyAllowSpecificOrigins,
+                    options.AddPolicy( MyAllowSpecificOrigins,
                                     policy =>
                                     {
                                         policy
-										.WithOrigins("http://localhost:3002", "https://localhost:3002")
-										.AllowCredentials()
-														
+                                        .AllowCredentials()
+                                        .WithOrigins("https://localhost:3002")
                                         .AllowAnyHeader()
                                         .AllowAnyMethod();
+                                        
                                     });
                 });
 
-            builder.Services.AddControllers( opt=>
+            builder.Services.AddControllers(opt =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                 opt.Filters.Add(new AuthorizeFilter(policy));
@@ -53,15 +54,21 @@ namespace API
                 x.RegisterServicesFromAssemblyContaining<GetEventList.Handler>();
                 x.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
-           
+
             builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
             builder.Services.AddValidatorsFromAssemblyContaining<CreateEventValidator>();
             builder.Services.AddTransient<ExceptionMiddleware>();
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SameSite = SameSiteMode.None;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            });
             builder.Services.AddIdentityApiEndpoints<User>(opt =>
             {
                 opt.User.RequireUniqueEmail = true;
             }).AddRoles<IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
-			var app = builder.Build();
+            var app = builder.Build();
 
             // Configure the HTTP request pipeline.
             app.UseMiddleware<ExceptionMiddleware>();
@@ -80,7 +87,7 @@ namespace API
                 var context = service.GetRequiredService<AppDbContext>();
                 var userManager = service.GetRequiredService<UserManager<User>>();
                 await context.Database.MigrateAsync();
-                await DbInitializer.SeedData(context,userManager);
+                await DbInitializer.SeedData(context, userManager);
             }
             catch (Exception ex)
             {

@@ -1,11 +1,11 @@
 import { TextField, TextFieldProps } from "@mui/material";
 
-import { useController, UseControllerProps } from "react-hook-form";
-import { FormSchemaType } from "../../../lib/schema/FormSchema";
+import { FieldValues, useController, UseControllerProps } from "react-hook-form";
 
-type Props = TextFieldProps & UseControllerProps<FormSchemaType>;
 
-export default function CustomTextField(props: Props) {
+type Props<T extends FieldValues> ={}& TextFieldProps & UseControllerProps<T>;
+
+export default function CustomTextField<T extends FieldValues>(props: Props<T>) {
   const { field, fieldState } = useController({ ...props });
 
   return (

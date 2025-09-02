@@ -20,7 +20,7 @@ createRoot(document.getElementById("root")!).render(
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools />
-        <ToastContainer position="bottom-right" autoClose={800} />
+        <ToastContainer position="bottom-right" autoClose={1500} />
         <RouterProvider router={router} />
       </QueryClientProvider>
     </LocalizationProvider>
