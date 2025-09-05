@@ -15,20 +15,23 @@ namespace Persistence
 	{
 		public static async Task SeedData(AppDbContext context, UserManager<User> userManager)
 		{
-			if (!userManager.Users.Any())
-			{
-				var users = new List<User>
+			var users = new List<User>
 				{
 					new() {Id="bob-id",DisplayName="Bob", UserName= "bob@test.com", Email= "bob@test.com"},
 					new() { Id = "jane-id", DisplayName="Jane", UserName="jane@test.com", Email= "jane@test.com" },
 					new() { Id = "tom-id", DisplayName="Tom", UserName="tom@test.com", Email= "tom@test.com" }
 				};
-				foreach(var user in users){
-				await userManager.CreateAsync(user, "Passw0rd!");
+
+			if (!userManager.Users.Any())
+			{
+
+				foreach (var user in users)
+				{
+					await userManager.CreateAsync(user, "Passw0rd!");
+				}
+
 			}
 
-	}
-			
 
 			if (context.Events.Any()) return;
 
@@ -43,6 +46,19 @@ namespace Persistence
 				Venue = "Toronto City Hall, 100 Queen St W, Toronto, ON M5H 2N2",
 				Latitude = 43.653908,
 				Longitude =-79.384293,
+				Attendees =
+				[
+					new()
+					{
+						UserId = users[0].Id,
+						IsHost = true,
+					},
+					new()
+					{
+						UserId = users[1].Id,
+						IsHost = false,
+					}
+				]
 			},
 			new() {
 				Title = "Key Points of Rental Agreements",
@@ -52,7 +68,23 @@ namespace Persistence
 				City = "Toronto",
 				Venue = "Exhibition Place,100 Princes' Blvd,Toronto, ON M6K 3C3",
 				Latitude = 43.635040,
-				Longitude = -79.412468
+				Longitude = -79.412468,
+				Attendees =
+				[
+					new()
+					{
+						UserId = users[1].Id,
+						IsHost = true,
+					},
+					new()
+					{
+						UserId = users[2].Id
+					},
+					new()
+					{
+						UserId = users[0].Id,
+					}
+				]
 			},
 			new() {
 				Title = "Regional Development Plan Update Seminar",
@@ -62,7 +94,16 @@ namespace Persistence
 				City = "Toronto",
 				Venue = "Yonge-Dundas Square,2 Carlton Street, Suite 1707 Toronto, Ontario, M5B 1J3  ",
 				Latitude = 43.656071,
-				Longitude = -79.380280
+				Longitude = -79.380280,
+				Attendees =
+				[
+					new()
+					{
+						UserId = users[2].Id,
+						IsHost = true,
+					}
+				]
+			
 			},
 			new() {
 				Title = "Rental Property Income Analysis Workshop",
@@ -72,7 +113,19 @@ namespace Persistence
 				City = "Toronto",
 				Venue = "Ontario Place, 955 Lake Shore Blvd W, Toronto, ON M6K 3B9",
 				Latitude = 43.6286,
-				Longitude = -79.4500
+				Longitude = -79.4500,
+				Attendees =
+				[
+					new()
+					{
+						UserId = users[0].Id,
+						IsHost = true,
+					},
+					new()
+					{
+						UserId = users[2].Id
+					}
+				]
 			},
 			new()
 			{
@@ -83,7 +136,15 @@ namespace Persistence
 				City = "London",
 				Venue = "The Mayflower",
 				Latitude = 51.501778,
-				Longitude = -0.053577
+				Longitude = -0.053577,
+				Attendees =
+				[
+					new()
+					{
+						UserId = users[1].Id,
+						IsHost = true,
+					}
+				]
 			},
 			new()
 			{
@@ -94,7 +155,19 @@ namespace Persistence
 				City = "Hamilton",
 				Venue = "Hamilton City Hall,71 Main St W, Hamilton, ON L8P 1P9",
 				Latitude = 43.2552,
-				Longitude = -79.8711
+				Longitude = -79.8711,
+				Attendees =
+				[
+					new()
+					{
+						UserId = users[2].Id,
+						IsHost = true,
+					},
+					new()
+					{
+						UserId = users[0].Id
+					}
+				]
 			},
 			new()
 			{
@@ -105,7 +178,15 @@ namespace Persistence
 				City = "Ottawa",
 				Venue = "Ottawa City Hall,110 Laurier Ave W, Ottawa, ON K1P 1J1",
 				Latitude = 45.4215,
-				Longitude = -75.6972
+				Longitude = -75.6972,
+				Attendees =
+				[
+					new()
+					{
+						UserId = users[0].Id,
+						IsHost = true,
+					}
+				]
 			},
 			new()
 			{
@@ -116,7 +197,19 @@ namespace Persistence
 				City = "Markham",
 				Venue = "Markham Civic Centre,101 Town Centre Blvd, Markham, ON L3R 9W3",
 				Latitude = 51.5432505,
-				Longitude = -79.2611
+				Longitude = -79.2611,
+				Attendees =
+				[
+					new()
+					{
+						UserId = users[1].Id,
+						IsHost = true,
+					},
+					new()
+					{
+						UserId = users[0].Id
+					}
+				]
 			},
 			new()
 			{
@@ -127,7 +220,19 @@ namespace Persistence
 				City = "Mississauga",
 				Venue = "Mississauga Civic Centre,300 City Centre Dr, Mississauga, ON L5B 3C1",
 				Latitude = 43.5890,
-				Longitude =-79.6440
+				Longitude =-79.6440,
+				Attendees =
+				[
+					new()
+					{
+						UserId = users[2].Id,
+						IsHost = true,
+					},
+					new()
+					{
+						UserId = users[1].Id
+					}
+				]
 			},
 			new()
 			{
@@ -138,7 +243,15 @@ namespace Persistence
 				City = " The Blue Mountains",
 				Venue = "Village Conference Centre,242 Jozo Weider Blvd, The Blue Mountains, ON L9Y 3Z2",
 				Latitude = 44.4994,
-				Longitude = -80.3730
+				Longitude = -80.3730,
+				Attendees =
+				[
+					new()
+					{
+						UserId = users[0].Id,
+						IsHost = true,
+					}
+				]
 			}
 			};
 

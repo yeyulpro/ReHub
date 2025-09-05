@@ -5,7 +5,7 @@ import CustomTextField from "../features/events/form/CustomTextField";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginSchemaType } from "../lib/schema/LoginSchema";
 import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link,  useNavigate } from "react-router";
 
 export const LoginForm = () => {
   const navigate = useNavigate();

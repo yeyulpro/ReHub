@@ -17,9 +17,10 @@ using Persistence;
 namespace API.Controllers
 {
     public class EventsController : BaseApiController
-    {   [AllowAnonymous]
+    {
+        [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<Result<List<Event>>>> GetEvents()
+        public async Task<ActionResult<Result<List<EventDto>>>> GetEvents()
         {
             var result = await Mediator.Send(new GetEventList.Query());
             return Ok(result.Value);
@@ -27,7 +28,7 @@ namespace API.Controllers
         }
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Result<Event>>> GetEventById(string id)
+        public async Task<ActionResult<Result<EventDto>>> GetEventById(string id)
         {
             var result = await Mediator.Send(new GetEventDetails.Query { Id = id });
             if (!result.IsSuccess && result.Code == 404) return NotFound();
@@ -39,27 +40,40 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<Result<string>>> CreateEvent(CreateEventDto evtDto)
         {
+           
             var result = await Mediator.Send(new CreateEvent.Command { EventDto = evtDto });
-             return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateEvent(EditEventDto evtDto)
+        [HttpPut("{id}")]
+        [Authorize(Policy ="IsActivityHost")]
+        public async Task<ActionResult> UpdateEvent(EditEventDto evtDto, string id)
         {
-           var result= await Mediator.Send(new EditEvent.Command { EventDto = evtDto });
-            if (!result.IsSuccess && result.Code== 404) return NotFound();
+			evtDto.Id = id;
+			var result = await Mediator.Send(new EditEvent.Command { EventDto = evtDto });
+            if (!result.IsSuccess && result.Code == 404) return NotFound();
 
-            return (result.IsSuccess ) ? Ok(result.Value) : BadRequest(result.Error);
+            return (result.IsSuccess) ? Ok(result.Value) : BadRequest(result.Error);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Result<Unit>>> DeleteEvent(string id)
+		[Authorize(Policy = "IsActivityHost")]
+		public async Task<ActionResult<Result<Unit>>> DeleteEvent(string id)
         {
             var result = await Mediator.Send(new DeleteEvent.Command { Id = id });
 
             if (!result.IsSuccess && result.Code == 404) return NotFound();
-            return result.IsSuccess ?Ok(result.Value): BadRequest(result.Error);
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+
+        }
+
+        [HttpPost("{id}/attend")]
+        public async Task<ActionResult<Result<Unit>>> Attend(string id)
+        {
+            var result = await Mediator.Send(new UpdateAttendance.Command { Id = id });
            
+            return result.IsSuccess ? Ok(result.Value): BadRequest(result.Error);
+            
         }
     }
 }

@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Identity;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Application.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Infrastructure.security;
 
 
 
@@ -29,7 +32,7 @@ namespace API
 
             builder.Services.AddCors(options =>
                 {
-                    options.AddPolicy( MyAllowSpecificOrigins,
+                    options.AddPolicy(MyAllowSpecificOrigins,
                                     policy =>
                                     {
                                         policy
@@ -37,7 +40,7 @@ namespace API
                                         .WithOrigins("https://localhost:3002")
                                         .AllowAnyHeader()
                                         .AllowAnyMethod();
-                                        
+
                                     });
                 });
 
@@ -55,19 +58,37 @@ namespace API
                 x.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
 
+            builder.Services.AddScoped<IUserAccessor, UserAccessor>();
             builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
             builder.Services.AddValidatorsFromAssemblyContaining<CreateEventValidator>();
             builder.Services.AddTransient<ExceptionMiddleware>();
+            
+
             builder.Services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.HttpOnly = true;
                 options.Cookie.SameSite = SameSiteMode.None;
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
             });
+
+
+
+
             builder.Services.AddIdentityApiEndpoints<User>(opt =>
             {
                 opt.User.RequireUniqueEmail = true;
             }).AddRoles<IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+
+
+            builder.Services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IsActivityHost", policy =>
+                {
+                    policy.Requirements.Add(new IsHostRequirement());
+                });
+            });
+            builder.Services.AddScoped<IAuthorizationHandler,IsHostRequirementHandler>();
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -77,7 +98,8 @@ namespace API
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
-            app.MapGroup("api").MapIdentityApi<User>();  //api/login
+            app.MapGroup("api").MapIdentityApi<User>();  
+            
 
             using var scope = app.Services.CreateScope();
             var service = scope.ServiceProvider;

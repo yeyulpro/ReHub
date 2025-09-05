@@ -1,4 +1,7 @@
 ﻿using Application.Core;
+using Application.Events.Dto;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,19 +16,21 @@ namespace Application.Events.Queries
 {
 	public class GetEventList
 	{
-		public class Query : IRequest<Result<List<Event>>>
+		public class Query : IRequest<Result<List<EventDto>>>
 		{ 
 
 		}
-		public class Handler(AppDbContext context) : IRequestHandler<Query, Result<List<Event>>>
+		public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, Result<List<EventDto>>>
 		{
-			public async Task<Result<List<Event>>> Handle(Query request, CancellationToken cancellationToken)
+			public async Task<Result<List<EventDto>>> Handle(Query request, CancellationToken cancellationToken)
 			{
-				var events = await context.Events.ToListAsync(cancellationToken);
+				var events = await context.Events
+												.ProjectTo<EventDto>(mapper.ConfigurationProvider)
+												.ToListAsync(cancellationToken);
 
-				if (events == null) return Result<List<Event>>.Failure("Events not found.", 404);
+				if (events == null) return Result<List<EventDto>>.Failure("Events not found.", 404);
 
-				return Result<List<Event>>.Success(events);
+				return Result<List<EventDto>>.Success(events);
 
 				
 			}
