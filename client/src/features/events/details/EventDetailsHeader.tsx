@@ -1,16 +1,14 @@
 import { Card, CardMedia, Box, Typography, Button, Chip } from "@mui/material";
-import { NavLink } from "react-router";
+import { Link } from "react-router";
 import { format } from "date-fns";
 import { Hub_Event } from "../../../lib/types";
+import { useEvents } from "../../../lib/hooks/useEvents";
 
 type Props = {
   event: Hub_Event;
 };
 export default function EventDetailHeader({ event }: Props) {
-  const isCancelled = false;
-  const isHost = true;
-  const isGoing = false;
-
+  const { updateAttendance } = useEvents(event.id);
   const eventDate =
     event.date instanceof Date ? event.date : new Date(event.date);
 
@@ -22,7 +20,7 @@ export default function EventDetailHeader({ event }: Props) {
           alt="green iguana"
           image={`/images/${event.category.toLowerCase()}.jpg`}
         />
-        {isCancelled ? (
+        {event.isCancelled ? (
           <Chip
             sx={{ position: "absolute", left: 40, top: 20, zIndex: 1000 }}
             color="error"
@@ -45,6 +43,7 @@ export default function EventDetailHeader({ event }: Props) {
         <Box
           sx={{
             display: "flex",
+            alignItems: "center",
             justifyContent: "space-between",
             position: "absolute",
             height: "100px",
@@ -54,15 +53,23 @@ export default function EventDetailHeader({ event }: Props) {
             width: "100%",
           }}
         >
-          <Box>
-            <Typography variant="h5" sx={{ color: "#FFFF", pl: 2 }}>
-              {event.title}
-            </Typography>
-            <Typography variant="subtitle1" sx={{ color: "#FFFF", pl: 2 }}>
+          <Box sx={{ color: "#FFFF", pl: 2 }}>
+            <Typography variant="h5">{event.title}</Typography>
+            <Typography variant="subtitle1">
               {format(eventDate, "yyyy-MM-dd HH:mm")}
             </Typography>
-            <Typography variant="subtitle2" sx={{ color: "#FFFF", pl: 2 }}>
-              Hosted by Bob
+            <Typography variant="subtitle2">
+              Hosted by{" "}
+              <Link
+                to={`profiles/${event.hostId}`}
+                style={{
+                  color: "#FFFF",
+                  textDecoration: "none",
+                  fontSize: "1.2rem",
+                }}
+              >
+                {event.hostDisplayName}
+              </Link>
             </Typography>
           </Box>
 
@@ -74,71 +81,43 @@ export default function EventDetailHeader({ event }: Props) {
               pr: 2,
             }}
           >
-            {isHost ? (
-              isCancelled ? (
+            {event.isHost ? (
+              <>
                 <Button
-                  onClick={() => {}}
-                  size="large"
                   sx={{
-                    color: "#ee4832ff",
-                    fontSize: "large",
-                    fontWeight: "bolder",
+                    bgcolor: "#0683f7ff",
+                    color: "#FFFF00",
+                    height: 40,
+                    mr: 2,
+                  }}
+                  onClick={() => {
+                    updateAttendance.mutate(event.id);
                   }}
                 >
-                  Reactivate
+                  {event.isCancelled
+                    ? "Re-activate the Event"
+                    : "Cancel the Event"}
                 </Button>
-              ) : (
-                <>
-                  <Button
-                    onClick={() => {}}
-                    size="large"
-                    sx={{
-                      color: "#ee4832ff",
-                      fontSize: "large",
-                      fontWeight: "bolder",
-                    }}
-                  >
-                    Cancel Event
-                  </Button>
-                  <Button
-                    component={NavLink}
-                    to={`/manage/${event.id}`}
-                    size="large"
-                    sx={{
-                      color: "#c2bcf0ff",
-                      fontSize: "large",
-                      fontWeight: "bolder",
-                    }}
-                  >
-                    Manage Event
-                  </Button>
-                </>
-              )
+                <Button
+                  disabled={event.isCancelled}
+                  sx={{ bgcolor: "#ff7a2dff", color: "#FFFF00", height: 40 }}
+                >
+                  Manage the Event
+                </Button>
+              </>
             ) : (
-              !isCancelled &&
-              (isGoing ? (
+              !event.isCancelled && (
                 <Button
-                  size="large"
+                  onClick={() => updateAttendance.mutate(event.id)}
                   sx={{
-                    color: "#c2bcf0ff",
-                    fontSize: "large",
-                    fontWeight: "bolder",
+                    bgcolor: "#0683f7ff",
+                    color: event.isGoing ? "#FFFF" : "#FFFF00",
+                    height: 40,
                   }}
                 >
-                  Cancel going
+                  {event.isGoing ? "Cancel Attendance" : "Attend the Event"}
                 </Button>
-              ) : (
-                <Button
-                  size="large"
-                  sx={{
-                    color: "#c2bcf0ff",
-                    fontSize: "large",
-                    fontWeight: "bolder",
-                  }}
-                >
-                  attend request
-                </Button>
-              ))
+              )
             )}
           </Box>
         </Box>
