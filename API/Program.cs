@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Application.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Infrastructure.security;
+using Infrastructure.Photos;
 
 
 
@@ -57,12 +58,14 @@ namespace API
                 x.RegisterServicesFromAssemblyContaining<GetEventList.Handler>();
                 x.AddOpenBehavior(typeof(ValidationBehavior<,>));
             });
+            builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
             builder.Services.AddScoped<IUserAccessor, UserAccessor>();
+            builder.Services.AddScoped<IPhotoService, PhotoService>();
             builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
             builder.Services.AddValidatorsFromAssemblyContaining<CreateEventValidator>();
             builder.Services.AddTransient<ExceptionMiddleware>();
-            
+
 
             builder.Services.ConfigureApplicationCookie(options =>
             {
@@ -87,7 +90,7 @@ namespace API
                     policy.Requirements.Add(new IsHostRequirement());
                 });
             });
-            builder.Services.AddScoped<IAuthorizationHandler,IsHostRequirementHandler>();
+            builder.Services.AddScoped<IAuthorizationHandler, IsHostRequirementHandler>();
 
             var app = builder.Build();
 
@@ -98,8 +101,8 @@ namespace API
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
-            app.MapGroup("api").MapIdentityApi<User>();  
-            
+            app.MapGroup("api").MapIdentityApi<User>();
+
 
             using var scope = app.Services.CreateScope();
             var service = scope.ServiceProvider;
