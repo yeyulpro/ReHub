@@ -19,10 +19,12 @@ export const useEvents = (id?: string) => {
     enabled: !id && !!currentUser && location.pathname == "/events",
     select: (data) => {
       return data.map((event) => {
+        const host =event.attendees.find(x=>x.id==event.hostId);
         return {
           ...event,
           isHost: currentUser?.id === event.hostId,
           isGoing: event.attendees.some((x) => x.id === currentUser!.id),
+          hostImageUrl:host?.imageUrl
         };
       });
     },
@@ -36,10 +38,12 @@ export const useEvents = (id?: string) => {
     },
     enabled: !!id && !!currentUser && location.pathname == `/events/${id}`,
     select: (data) => {
+       const host =data.attendees.find(x=>x.id==data.hostId);
       return {
         ...data,
         isHost: currentUser?.id === data.hostId,
         isGoing: data.attendees.some((x) => x.id === currentUser!.id),
+        hostImageUrl:host?.imageUrl
       };
     },
   });

@@ -14,6 +14,7 @@ export type Hub_Event = {
   isHost: boolean;
   hostId: string;
   hostDisplayName: string;
+  hostImageUrl?:string;
 };
 
 export type Profile = {
@@ -22,6 +23,13 @@ export type Profile = {
   bio?: string;
   imageUrl?: string;
 };
+
+export type Photo={
+  id:string;
+  url:string;
+  
+
+}
 
 export type User = {
   id: string;

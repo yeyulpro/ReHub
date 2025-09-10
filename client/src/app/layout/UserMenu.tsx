@@ -1,13 +1,21 @@
-import { Avatar, Box, Button, Divider, Menu, MenuItem, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Divider,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@mui/material";
 import { useAccount } from "../../lib/hooks/useAccount";
 import React from "react";
 import AddIcon from "@mui/icons-material/Add";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 export default function UserMenu() {
-  const { logOutUser } = useAccount();
+  const { logOutUser, currentUser } = useAccount();
 
   const navigate = useNavigate();
 
@@ -23,7 +31,7 @@ export default function UserMenu() {
   return (
     <Box sx={{ display: "flex" }}>
       <Button color="inherit" onClick={handleClick} sx={{ gap: 2 }}>
-        <Avatar />
+        <Avatar src={currentUser?.imageUrl} alt="Current user image" />
         user menu
       </Button>
       <Menu
@@ -44,7 +52,11 @@ export default function UserMenu() {
           <AddIcon />
           <Typography color="initial">Create Event</Typography>
         </MenuItem>
-        <MenuItem sx={{ display: "flex", gap: 2 }} onClick={() => {}}>
+        <MenuItem
+          sx={{ display: "flex", gap: 2 }}
+          component={Link}
+          to={`/profile/${currentUser?.id}`}
+        >
           <PersonIcon />
           <Typography color="initial">My Profile</Typography>
         </MenuItem>

@@ -1,6 +1,6 @@
 import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
 import RoofingIcon from "@mui/icons-material/Roofing";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import MenuItemLink from "../shared/components/MenuItemLink";
 import WavingHandOutlinedIcon from "@mui/icons-material/WavingHandOutlined";
 import { useAccount } from "../../lib/hooks/useAccount";
@@ -67,7 +67,7 @@ export default function NavBar() {
 
               {currentUser ? (
                 <>
-                  <Typography sx={{ fontWeight: 500 }}>
+                  <Typography sx={{ fontWeight: 500, textDecoration:'none' }} component={Link} to={`profile/${currentUser.id}`}>
                     Hello <WavingHandOutlinedIcon /> {currentUser.displayName}
                   </Typography>
                   <Button size="medium" sx={{ color: "#555555" }}>

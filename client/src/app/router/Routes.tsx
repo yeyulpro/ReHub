@@ -9,6 +9,7 @@ import ErrorStatus from "../../features/errors/ErrorStatus";
 import { LoginForm } from "../../account/LoginForm";
 import RequireAuth from "./RequireAuth";
 import { RegisterForm } from "../../account/RegisterForm";
+import ProfilePage from "../../features/profiles/ProfilePage";
 
 export const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ export const router = createBrowserRouter([
           { path: "events/:id", element: <EventDetailPage /> },
           { path: "createEvent", element: <EventForm key={"create"} /> },
           { path: "manage/:id", element: <EventForm /> },
+          { path: "profile/:id", element: <ProfilePage /> },
         ],
       },
       { path: "login", element: <LoginForm /> },
