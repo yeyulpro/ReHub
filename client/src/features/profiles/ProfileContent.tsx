@@ -2,17 +2,17 @@ import { Box, Paper, Tab, Tabs } from "@mui/material";
 import { SyntheticEvent, useState } from "react";
 
 import ProfilePhoto from "./ProfilePhoto";
+import ProfileAbout from "./ProfileAbout";
 
 
 export default function ProfileContent() {
   const [value, setValue] = useState(0);
   const handleChange = (_: SyntheticEvent, newValue: number) => {
-    // 첫 번째 인자를 _로 쓴 건 그 인자를 실제로 사용하지 않는다는 신호야.프로그래밍 관습에서 언더스코어 하나(_)는 “이 값은 받아오긴 하지만 쓰지 않을 거야”라는 뜻으로, ESLint 같은 린터가 “정의해놓고 안 쓰는 변수”에 대해 경고하는 것을 피하기 위해 쓰기도 해.
     setValue(newValue);
   };
 
   const tabContents = [
-    { label: "About", content: <div>About</div>, color: "#ff5722" },
+    { label: "About", content: <ProfileAbout/>, color: "#ff5722" },
     { label: "Photos", content:<ProfilePhoto  />, color: "#ab47bc" },
     { label: "Events", content: <div>Events</div>, color: "#3f51b5" },
     { label: "Followers", content: <div>Followers</div>, color: "#2196f3" },

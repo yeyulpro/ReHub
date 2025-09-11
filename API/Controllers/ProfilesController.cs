@@ -46,10 +46,17 @@ namespace API.Controllers
       return Ok(result.Value);
     }
 
-     [HttpGet("{userId}")]
+    [HttpGet("{userId}")]
     public async Task<ActionResult> GetProfile(string userId)
     {
       var result = await Mediator.Send(new GetProfile.Query { UserId = userId });
+      if (!result.IsSuccess) return BadRequest(result.Error);
+      return Ok(result.Value);
+    }
+    [HttpPut]
+    public async Task<ActionResult> UpdateProfile([FromBody] EditProfile.Command command)
+    {
+      var result = await Mediator.Send(command);
       if (!result.IsSuccess) return BadRequest(result.Error);
       return Ok(result.Value);
     }

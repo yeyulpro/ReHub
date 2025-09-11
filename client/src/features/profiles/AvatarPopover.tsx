@@ -4,6 +4,7 @@ import Popover from "@mui/material/Popover";
 import { Avatar } from "@mui/material";
 import { Profile } from "../../lib/types";
 import ProfileCard from "./ProfileCard";
+import { Link } from "react-router-dom";
 
 type Props = {
   profile: Profile;
@@ -24,6 +25,8 @@ export default function AvatarPopover({ profile }: Props) {
   return (
     <div>
       <Avatar
+        component={Link}
+        to={`/profile/${profile.id}`}
         alt={profile.displayName}
         src={profile?.imageUrl || "/images/person.png"}
         sx={{ width: 56, height: 56 }}

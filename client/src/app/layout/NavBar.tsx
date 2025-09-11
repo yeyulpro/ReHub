@@ -1,4 +1,4 @@
-import { AppBar, Box, Button, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, Toolbar, Typography } from "@mui/material";
 import RoofingIcon from "@mui/icons-material/Roofing";
 import { Link, NavLink } from "react-router";
 import MenuItemLink from "../shared/components/MenuItemLink";
@@ -67,12 +67,14 @@ export default function NavBar() {
 
               {currentUser ? (
                 <>
-                  <Typography sx={{ fontWeight: 500, textDecoration:'none' }} component={Link} to={`profile/${currentUser.id}`}>
+                  <Typography
+                    sx={{ fontWeight: 500, textDecoration: "none" }}
+                    component={Link}
+                    to={`profile/${currentUser.id}`}
+                  >
                     Hello <WavingHandOutlinedIcon /> {currentUser.displayName}
                   </Typography>
-                  <Button size="medium" sx={{ color: "#555555" }}>
-                    <UserMenu />
-                  </Button>
+                  <UserMenu />
                 </>
               ) : (
                 <Box sx={{ display: "flex", gap: 3, mr: 3 }}>

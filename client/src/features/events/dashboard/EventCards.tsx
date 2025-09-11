@@ -7,7 +7,7 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import { Hub_Event,  } from "../../../lib/types";
+import { Hub_Event } from "../../../lib/types";
 import { Link } from "react-router";
 import { useEvents } from "../../../lib/hooks/useEvents";
 import Avatar from "@mui/material/Avatar";
@@ -18,7 +18,6 @@ import AvatarPopover from "../../profiles/AvatarPopover";
 
 type Props = {
   event: Hub_Event;
-  
 };
 
 export default function EventCards({ event }: Props) {
@@ -41,7 +40,7 @@ export default function EventCards({ event }: Props) {
           <Box
             sx={{ display: "flex", gap: 3, pl: 1, justifyContent: "center" }}
           >
-            <Avatar alt="Remy Sharp" src={event.hostImageUrl}/>
+            <Avatar alt="Remy Sharp" src={event.hostImageUrl} />
             <Box>
               <Typography
                 gutterBottom
@@ -50,7 +49,12 @@ export default function EventCards({ event }: Props) {
               >
                 {event.title}
               </Typography>
-              <Typography variant="body2" sx={{ color: "text.secondary" }} component={Link} to={`/profile/${event.hostId}`}>
+              <Typography
+                variant="body2"
+                sx={{ color: "text.secondary" }}
+                component={Link}
+                to={`/profile/${event.hostId}`}
+              >
                 Hosted By {event.hostDisplayName}
               </Typography>
             </Box>
