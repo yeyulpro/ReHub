@@ -29,6 +29,10 @@ namespace Application
             .ForMember(d => d.Id, o => o.MapFrom(e => e.User.Id));
 
             CreateMap<User, UserProfile>();
+
+            CreateMap<Comment, CommentDto>()
+            .ForMember(d => d.DisplayName, o => o.MapFrom(c => c.User.DisplayName))
+            .ForMember(d => d.ImageUrl, o => o.MapFrom(c => c.User.ImageUrl));
         }
 
     }

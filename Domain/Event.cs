@@ -22,6 +22,7 @@ namespace Domain
 
         //navigation properties
         public ICollection<EventAttendee> Attendees { get; set; } = [];
+        public ICollection<Comment> Comments { get; set; } = [];
         
     }
 }

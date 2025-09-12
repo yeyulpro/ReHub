@@ -3,17 +3,46 @@ import {
   Typography,
   Card,
   CardContent,
-  TextField,
-  Avatar,
-} from "@mui/material";
-import { Link } from "react-router-dom";
-import { Hub_Event } from "../../../lib/types";
 
-type Props = {
-  event: Hub_Event;
-};
-export default function EventDetailsChat({ event }: Props) {
-  console.log(event)
+  Avatar,
+ 
+  CircularProgress,
+  TextField,
+} from "@mui/material";
+import { Link, useParams } from "react-router-dom";
+import { ChatComment } from "../../../lib/types";
+import { useComments } from "../../../lib/hooks/useComments";
+import { FieldValues, useForm } from "react-hook-form";
+import { observer } from "mobx-react-lite";
+
+const EventDetailsChat = observer(function EventDetailsChat() {
+  const { id } = useParams();
+  const { commentStore } = useComments(id);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitting },
+  } = useForm();
+
+  const addComment = async (data: FieldValues) => {
+    try {
+      await commentStore.hubConnection?.invoke("SendComment", {
+        eventId: id,
+        body: data.body,
+      });
+      reset();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      handleSubmit(addComment)();
+    }
+  };
   return (
     <>
       <Box
@@ -28,48 +57,61 @@ export default function EventDetailsChat({ event }: Props) {
       </Box>
       <Card>
         <CardContent>
-          <Box>
-            <Box component="form">
+          <div>
+            <form >
               <TextField
+                {...register("body", { required: true })}
                 variant="outlined"
                 fullWidth
                 multiline
                 rows={2}
                 placeholder="Enter your comment (Enter to submit, SHIFT + Enter for new line)"
+                onKeyDown={handleKeyPress}
+                slotProps={{
+                  input: {
+                    endAdornment: isSubmitting ? (
+                      <CircularProgress size={24} />
+                    ) : null,
+                  },
+                }}
               />
-            </Box>
-          </Box>
+            
+            </form>
+          </div>
 
-          <Box>
-            <Box sx={{ display: "flex", my: 2 }}>
-              <Avatar
-                src={"/images/user.png"}
-                alt={"user image"}
-                sx={{ mr: 2 }}
-              />
-              <Box display="flex" flexDirection="column">
-                <Box display="flex" alignItems="center" gap={3}>
-                  <Typography
-                    component={Link}
-                    to={`/profiles/username`}
-                    variant="subtitle1"
-                    sx={{ fontWeight: "bold", textDecoration: "none" }}
-                  >
-                    Bob
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    2 hours ago
+          <Box sx={{ height: 400, overflow: "auto" }}>
+            {commentStore.comments.map((comment: ChatComment) => (
+              <Box key={comment.id} sx={{ display: "flex", my: 2 }}>
+                <Avatar
+                  src={comment.imageUrl ?? "/images/person.png"}
+                  alt={comment.displayName}
+                  sx={{ mr: 2 }}
+                />
+                <Box display="flex" flexDirection="column">
+                  <Box display="flex" alignItems="center" gap={3}>
+                    <Typography
+                      component={Link}
+                      to={`/profiles/${comment.userId}`}
+                      variant="subtitle1"
+                      sx={{ fontWeight: "bold", textDecoration: "none" }}
+                    >
+                      {comment.displayName}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {new Date(comment.createdAt).toLocaleString()}{" "}
+                    </Typography>
+                  </Box>
+
+                  <Typography sx={{ whiteSpace: "pre-wrap" }}>
+                    {comment.body}
                   </Typography>
                 </Box>
-
-                <Typography sx={{ whiteSpace: "pre-wrap" }}>
-                  Comment goes here
-                </Typography>
               </Box>
-            </Box>
+            ))}
           </Box>
         </CardContent>
       </Card>
     </>
   );
-}
+});
+export default EventDetailsChat;

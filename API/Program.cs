@@ -18,6 +18,7 @@ using Application.Interfaces;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Infrastructure.security;
 using Infrastructure.Photos;
+using API.SignalR;
 
 
 
@@ -44,7 +45,7 @@ namespace API
 
                                     });
                 });
-
+            builder.Services.AddSignalR();
             builder.Services.AddControllers(opt =>
             {
                 var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
@@ -102,7 +103,7 @@ namespace API
             app.UseAuthorization();
             app.MapControllers();
             app.MapGroup("api").MapIdentityApi<User>();
-
+            app.MapHub<CommentHub>("/comments");
 
             using var scope = app.Services.CreateScope();
             var service = scope.ServiceProvider;

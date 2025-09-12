@@ -27,8 +27,6 @@ export type Profile = {
 export type Photo={
   id:string;
   url:string;
-  
-
 }
 
 export type User = {
@@ -37,6 +35,15 @@ export type User = {
   displayName: string;
   imageUrl?: string;
 };
+
+export type ChatComment ={
+  id:string;
+  createdAt:Date;
+  body:string;
+  userId:string;
+  displayName:string;
+  imageUrl?:string
+}
 
 export type LocationIQSuggestion = {
   place_id: string;

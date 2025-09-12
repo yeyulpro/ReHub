@@ -18,7 +18,7 @@ export default function EventDetailPage() {
       <Grid size={{ xs: 12, md: 8 }}>
         <EventDetailsHeader event={event} />
         <EventDetailsInfo event={event} />
-        <EventDetailsChat event={event} />
+        <EventDetailsChat  />
       </Grid>
       <Grid size={{ xs: 12, md: 4 }}>
         <EventDetailsSidebar event={event} />

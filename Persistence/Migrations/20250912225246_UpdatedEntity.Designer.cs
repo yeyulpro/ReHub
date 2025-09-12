@@ -11,14 +11,43 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250907150357_InitialAndPhotoAdded")]
-    partial class InitialAndPhotoAdded
+    [Migration("20250912225246_UpdatedEntity")]
+    partial class UpdatedEntity
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.8");
+
+            modelBuilder.Entity("Domain.Comment", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("EventId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comments");
+                });
 
             modelBuilder.Entity("Domain.Event", b =>
                 {
@@ -308,6 +337,25 @@ namespace Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Comment", b =>
+                {
+                    b.HasOne("Domain.Event", "Event")
+                        .WithMany("Comments")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.EventAttendee", b =>
                 {
                     b.HasOne("Domain.Event", "Event")
@@ -392,6 +440,8 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Event", b =>
                 {
                     b.Navigation("Attendees");
+
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
