@@ -23,6 +23,8 @@ namespace Infrastructure.Photos
                 config.Value.ApiSecret
                 );
             _cloudinary = new Cloudinary(account);
+             _cloudinary.Api.Secure = true; 
+           
         }
         public async Task<string> DeletePhoto(string publicId)
         {
@@ -54,8 +56,8 @@ namespace Infrastructure.Photos
                 }
                 return new PhotoUploadResult
                 {
-                    PublicId = uploadResult.PublicId,
-                    Url = uploadResult.Url.AbsoluteUri
+                    PublicId = uploadResult.PublicId,                   
+                    Url = uploadResult.SecureUrl.AbsoluteUri
                 };
             }
             return null;

@@ -9,12 +9,17 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { Profile } from "../../lib/types";
-type Props = {
-  profile: Profile;
-};
-export default function ProfileHeader({ profile }: Props) {
-  const isFollowing = true;
+
+import { useProfile } from "../../lib/hooks/useprofile";
+import { useParams } from "react-router";
+
+export default function ProfileHeader() {
+  const { id } = useParams();
+  const { isCurrentUser, updateFollowing, profile } = useProfile(id);
+
+  if (!profile)
+    return <Typography color="initial">Profile is not found...</Typography>;
+
   return (
     <Paper elevation={3} sx={{ p: 4, borderRadius: 3 }}>
       <Grid container spacing={3}>
@@ -29,7 +34,7 @@ export default function ProfileHeader({ profile }: Props) {
               <Typography variant="h6" color="initial">
                 {profile.displayName}
               </Typography>
-              {isFollowing && (
+              {profile.following && (
                 <Chip
                   label="I am following"
                   variant="outlined"
@@ -40,38 +45,54 @@ export default function ProfileHeader({ profile }: Props) {
           </Stack>
         </Grid>
         <Grid size={4}>
-          <Stack spacing={2} alignItems="center">
+          <Stack alignItems="center">
             <Box
               display="flex"
               justifyContent="space-around"
+              sx={{ mb: 4 }}
               width="100"
-              gap={3}
+              gap={8}
             >
               <Box textAlign="center">
-                <Typography variant="h6" color="initial">
+                <Typography
+                  variant="h6"
+                  color="initial"
+                  sx={{ textTransform: "capitalize" }}
+                >
                   followers
                 </Typography>
                 <Typography variant="h6" color="initial">
-                  5
+                  {profile.followersCount}
                 </Typography>
               </Box>
               <Box textAlign="center">
-                <Typography variant="h6" color="initial">
+                <Typography
+                  variant="h6"
+                  color="initial"
+                  sx={{ textTransform: "capitalize" }}
+                >
                   following
                 </Typography>
                 <Typography variant="h6" color="initial">
-                  5
+                  {profile.followingsCount}
                 </Typography>
               </Box>
             </Box>
             <Divider />
-            <Button
-              fullWidth
-              variant="outlined"
-              color={isFollowing ? "error" : "secondary"}
-            >
-              {isFollowing ? "Unfollow" : "Follow"}
-            </Button>
+            {!isCurrentUser && (
+              <>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  color={profile.following ? "error" : "secondary"}
+                  onClick={() => {
+                    updateFollowing.mutate();
+                  }}
+                >
+                  {profile.following ? "Unfollow" : "Follow"}
+                </Button>
+              </>
+            )}
           </Stack>
         </Grid>
       </Grid>

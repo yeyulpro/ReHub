@@ -14,8 +14,6 @@ type Props = {
   event: Hub_Event;
 };
 export default function EventDetailsSidebar({ event }: Props) {
-  const following = true;
-
   return (
     <>
       <Paper
@@ -45,7 +43,7 @@ export default function EventDetailsSidebar({ event }: Props) {
                   </ListItemAvatar>
                   <ListItemText>
                     <Typography variant="h6">{attendee.displayName}</Typography>
-                    {following && (
+                    {attendee.following && (
                       <Typography variant="body2" color="#FF8000">
                         Following
                       </Typography>

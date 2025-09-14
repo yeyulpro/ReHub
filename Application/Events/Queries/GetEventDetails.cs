@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
 using Application.Events.Dto;
+using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain;
@@ -20,12 +21,12 @@ namespace Application.Events.Queries
             public required string Id { get; set; }
         }
 
-        public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Query, Result<EventDto>>
+        public class Handler(AppDbContext context, IMapper mapper, IUserAccessor userAccessor) : IRequestHandler<Query, Result<EventDto>>
         {
             public async Task<Result<EventDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var evt = await context.Events
-                                    .ProjectTo<EventDto>(mapper.ConfigurationProvider)
+                                    .ProjectTo<EventDto>(mapper.ConfigurationProvider,new {currentUserId = userAccessor.GetUserId()})
                                     .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
                 if (evt == null) return Result<EventDto>.Failure("Event is not found.", 404);

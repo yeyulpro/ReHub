@@ -15,7 +15,6 @@ type Props = {
   profile: Profile;
 };
 export default function ProfileCard({ profile }: Props) {
-  const following = true;
   return (
     <Card
       sx={{ textDecoration: "none", color: "inherit", maxWidth: 300 }}
@@ -56,7 +55,7 @@ export default function ProfileCard({ profile }: Props) {
               </Typography>
             )}
           </Typography>
-          {following && (
+          {profile.following && (
             <Chip
               size="small"
               label="Following"
@@ -78,7 +77,7 @@ export default function ProfileCard({ profile }: Props) {
         }}
       >
         <EmojiPeopleRoundedIcon />
-        <Typography> Followers are {following ? 20 : 3}</Typography>
+        <Typography> Followers are {profile.followersCount}</Typography>
       </Box>
     </Card>
   );

@@ -104,7 +104,7 @@ export default function ProfilePhoto() {
                   loading="lazy"
                 />
                 {isCurrentUser && (
-                  <>
+                  <Box>
                     <Box
                       sx={{ position: "absolute", top: "6px", left: "-16px" }}
                       onClick={() => setMainPhoto.mutate(item)}
@@ -119,7 +119,7 @@ export default function ProfilePhoto() {
                     >
                       <DeletePhoto />
                     </Box>
-                  </>
+                  </Box>
                 )}
               </ImageListItem>
             ))}

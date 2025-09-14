@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Core;
+using Application.Profiles;
 using Application.Profiles.Command;
 using Application.Profiles.Query;
 using Domain;
@@ -57,6 +58,22 @@ namespace API.Controllers
     public async Task<ActionResult> UpdateProfile([FromBody] EditProfile.Command command)
     {
       var result = await Mediator.Send(command);
+      if (!result.IsSuccess) return BadRequest(result.Error);
+      return Ok(result.Value);
+    }
+
+    [HttpPost("{targetUserId}/follow")]
+    public async Task<ActionResult> FollowToggle(string targetUserId)
+    {
+      var result = await Mediator.Send(new FollowToggle.Command { TargetUserId = targetUserId });
+      if (!result.IsSuccess) return BadRequest(result.Error);
+      return Ok(result.Value);
+    }
+
+    [HttpGet("{userId}/follow-list")]
+    public async Task<ActionResult> GetFollowings(string userId, string predicate)
+    {
+      var result = await Mediator.Send(new GetFollowings.Query { UserId = userId, Predicate = predicate });
       if (!result.IsSuccess) return BadRequest(result.Error);
       return Ok(result.Value);
     }
