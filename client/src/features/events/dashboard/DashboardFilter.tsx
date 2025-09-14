@@ -12,7 +12,12 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-export default function DashboardFilter() {
+import { useStore } from "../../../lib/hooks/useStore";
+import { observer } from "mobx-react-lite";
+const EventFilters = observer(function DashboardFilter() {
+  const {
+    eventStore: { setFilter, setStartDate, filter, startDate },
+  } = useStore();
   return (
     <Box
       sx={{
@@ -38,29 +43,50 @@ export default function DashboardFilter() {
           <Typography variant="h6">Filters</Typography>
         </Box>
         <MenuList>
-          <MenuItem>
+          <MenuItem
+            selected={filter === "all"}
+            onClick={() => setFilter("all")}
+          >
             <ListItemText primary="All Events" />
           </MenuItem>
-          <MenuItem>
+          <MenuItem
+            selected={filter === "isGoing"}
+            onClick={() => setFilter("isGoing")}
+          >
             <ListItemText primary="I am going" />
           </MenuItem>
-          <MenuItem>
+          <MenuItem
+            selected={filter === "isHost"}
+            onClick={() => setFilter("isHost")}
+          >
             <ListItemText primary="I am hosting" />
           </MenuItem>
         </MenuList>
       </Paper>
-      <Box sx={{borderRadius:3}}>
-        <Paper elevation={3} color="primary.main"  sx={{borderRadius: 3, overflow: "hidden"  }}>
-          <Box sx={{  textAlign: "center", p: 2 }}>
-            <Typography variant="h6" color="primary.main" sx={{display:'flex', alignItems:'center'}}>
+      <Box sx={{ borderRadius: 3 }}>
+        <Paper
+          elevation={3}
+          color="primary.main"
+          sx={{ borderRadius: 3, overflow: "hidden" }}
+        >
+          <Box sx={{ textAlign: "center", p: 2 }}>
+            <Typography
+              variant="h6"
+              color="primary.main"
+              sx={{ display: "flex", alignItems: "center" }}
+            >
               <EditCalendarIcon />
               Select Date
             </Typography>
             <Divider />
-            <Calendar />
+            <Calendar
+              value={startDate}
+              onChange={(date) => setStartDate(date as Date)}
+            />
           </Box>
         </Paper>
       </Box>
     </Box>
   );
-}
+});
+export default EventFilters;

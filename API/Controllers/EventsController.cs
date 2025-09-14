@@ -20,9 +20,9 @@ namespace API.Controllers
     {
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult<Result<List<EventDto>>>> GetEvents()
+        public async Task<ActionResult<Result<PagedList<EventDto, DateTime>>>> GetEvents([FromQuery]EventParams eventParams)
         {
-            var result = await Mediator.Send(new GetEventList.Query());
+            var result = await Mediator.Send(new GetEventList.Query{Params=eventParams});
             return Ok(result.Value);
 
         }

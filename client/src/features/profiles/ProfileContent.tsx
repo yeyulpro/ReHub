@@ -5,6 +5,7 @@ import ProfilePhoto from "./ProfilePhoto";
 import ProfileAbout from "./ProfileAbout";
 
 import ProfileFollowings from "./ProfileFollowings";
+import ProfileEvents from "./ProfileEvents";
 
 export default function ProfileContent() {
   const [value, setValue] = useState(0);
@@ -15,7 +16,7 @@ export default function ProfileContent() {
   const tabContents = [
     { label: "About", content: <ProfileAbout />, color: "#ff5722" },
     { label: "Photos", content: <ProfilePhoto />, color: "#ab47bc" },
-    { label: "Events", content: <div>Events</div>, color: "#3f51b5" },
+    { label: "Events", content: <ProfileEvents />, color: "#3f51b5" },
     {
       label: "Followers",
       content: <ProfileFollowings activeTab={value} />,

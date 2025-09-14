@@ -1,33 +1,64 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
-import { Hub_Event } from "../types";
+import { Hub_Event, PagedList } from "../types";
 import agent from "../api/agent";
 import { useNavigate } from "react-router";
 import { useAccount } from "./useAccount";
+import { useStore } from "./useStore";
 
 export const useEvents = (id?: string) => {
+  const {
+    eventStore: { filter, startDate },
+  } = useStore();
   const navigate = useNavigate();
   const { currentUser } = useAccount();
   const queryClient = useQueryClient();
 
-  const { data: events, isLoading } = useQuery({
-    queryKey: ["events"],
-    queryFn: async () => {
-      const response = await agent.get<Hub_Event[]>("events");
+  const {
+    data: eventsGroup,
+    isLoading,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
+  } = useInfiniteQuery<PagedList<Hub_Event, string>>({
+    queryKey: ["events", filter, startDate],
+    queryFn: async ({ pageParam = null }) => {
+      const response = await agent.get<PagedList<Hub_Event, string>>(
+        "/events",
+        {
+          params: {
+            cursor: pageParam,
+            pageSize: 3,
+            filter,
+            startDate,
+          },
+        }
+      );
       return response.data;
     },
+    initialPageParam: null,
+    getNextPageParam: (LastPage) => LastPage.nextCursor,
     enabled: !id && !!currentUser && location.pathname == "/events",
-    select: (data) => {
-      return data.map((event) => {
-        const host =event.attendees.find(x=>x.id==event.hostId);
-        return {
-          ...event,
-          isHost: currentUser?.id === event.hostId,
-          isGoing: event.attendees.some((x) => x.id === currentUser!.id),
-          hostImageUrl:host?.imageUrl
-        };
-      });
-    },
+    select: (data) => ({
+      ...data,
+      pages: data.pages.map((page) => ({
+        ...page,
+        items: page.items.map((event) => {
+          const host = event.attendees.find((x) => x.id == event.hostId);
+          return {
+            ...event,
+            isHost: currentUser?.id === event.hostId,
+            isGoing: event.attendees.some((x) => x.id === currentUser!.id),
+            hostImageUrl: host?.imageUrl,
+          };
+        }),
+      })),
+    }),
   });
 
   const { data: event, isLoading: isLoadingEvent } = useQuery({
@@ -38,12 +69,12 @@ export const useEvents = (id?: string) => {
     },
     enabled: !!id && !!currentUser && location.pathname == `/events/${id}`,
     select: (data) => {
-       const host =data.attendees.find(x=>x.id==data.hostId);
+      const host = data.attendees.find((x) => x.id == data.hostId);
       return {
         ...data,
         isHost: currentUser?.id === data.hostId,
         isGoing: data.attendees.some((x) => x.id === currentUser!.id),
-        hostImageUrl:host?.imageUrl
+        hostImageUrl: host?.imageUrl,
       };
     },
   });
@@ -79,15 +110,18 @@ export const useEvents = (id?: string) => {
   });
 
   const updateAttendance = useMutation({
-    mutationFn:async (id:string)=>{
-      await agent.post(`events/${id}/attend`)
+    mutationFn: async (id: string) => {
+      await agent.post(`events/${id}/attend`);
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["events", id] });
     },
-  })
+  });
   return {
-    events,
+    eventsGroup,
+    isFetchingNextPage,
+    fetchNextPage,
+    hasNextPage,
     isLoading,
     updateEvent,
     deleteEvent,

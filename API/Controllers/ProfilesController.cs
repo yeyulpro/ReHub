@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Application.Core;
 using Application.Profiles;
 using Application.Profiles.Command;
+using Application.Profiles.DTOs;
 using Application.Profiles.Query;
 using Domain;
 using MediatR;
@@ -74,6 +75,13 @@ namespace API.Controllers
     public async Task<ActionResult> GetFollowings(string userId, string predicate)
     {
       var result = await Mediator.Send(new GetFollowings.Query { UserId = userId, Predicate = predicate });
+      if (!result.IsSuccess) return BadRequest(result.Error);
+      return Ok(result.Value);
+    }
+    [HttpGet("{userId}/events")]
+    public async Task<ActionResult> GetUserActivities([FromRoute] string userId, [FromQuery] string filter)
+    {
+      var result = await Mediator.Send(new GetUserEvent.Query { UserId = userId, Filter = filter });
       if (!result.IsSuccess) return BadRequest(result.Error);
       return Ok(result.Value);
     }

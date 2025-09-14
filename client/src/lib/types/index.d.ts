@@ -1,3 +1,14 @@
+type PagedList<T,TCursor>={
+  items:T[],
+  nextCursor:TCursor
+
+
+}
+
+
+
+
+
 export type Hub_Event = {
   id: string;
   title: string;

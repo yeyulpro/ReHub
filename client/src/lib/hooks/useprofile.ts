@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Photo, Profile, User } from "../types";
+import { Hub_Event, Photo, Profile, User } from "../types";
 import agent from "../api/agent";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { EditProfileSchema } from "../schema/EditProfileSchema";
 
 export const useProfile = (id?: string, predicate?: string) => {
   const queryClient = useQueryClient();
+  const [filter, setFilter] = useState<string | null>(null);
 
   const { data: profile, isLoading: loadingProfile } = useQuery<Profile>({
     queryKey: ["profile", id],
@@ -149,6 +150,18 @@ export const useProfile = (id?: string, predicate?: string) => {
       });
     },
   });
+  const { data: userEvents, isLoading: LoadingUserEvent } = useQuery({
+    queryKey: ["user-events", filter],
+    queryFn: async () => {
+      const response = await agent.get<Hub_Event[]>(`/profiles/${id}/events`, {
+        params: {
+          filter,
+        },
+      });
+      return response.data;
+    },
+    enabled: !!id && !!filter,
+  });
 
   return {
     profile,
@@ -163,5 +176,9 @@ export const useProfile = (id?: string, predicate?: string) => {
     updateFollowing,
     followings,
     loadingfollowings,
+    userEvents,
+    LoadingUserEvent,
+    setFilter,
+    filter,
   };
 };

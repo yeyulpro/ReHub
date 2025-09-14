@@ -15,10 +15,19 @@ export default function ProfileFollowings({ activeTab }: Props) {
   return (
     <Box>
       <Box sx={{ display: "flex" }}>
-        <Typography variant="h5" color="initial">
+        <Typography
+          variant="h5"
+          color="initial"
+          sx={{
+            fontSize: "1.3rem",
+            color: "#FF7F50",
+            textTransform: "uppercase",
+            fontWeight: "bold",
+          }}
+        >
           {activeTab === 3
-            ? `These people are following ${profile?.displayName}`
-            : `${profile?.displayName} is following these people.`}
+            ? ` ${profile?.displayName}'s followers`
+            : `They like ${profile?.displayName} ...`}
         </Typography>
       </Box>
       <Divider />

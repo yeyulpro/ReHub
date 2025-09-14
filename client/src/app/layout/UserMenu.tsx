@@ -32,7 +32,14 @@ export default function UserMenu() {
     <Box sx={{ display: "flex" }}>
       <Button color="inherit" onClick={handleClick} sx={{ gap: 2 }}>
         <Avatar src={currentUser?.imageUrl} alt="Current user image" />
-        user menu
+        <Typography
+          variant="body1"
+          color="#FFFF"
+          sx={{ fontsize: "1.2rem", fontWeight: "bold" }}
+        >
+          {" "}
+          user menu
+        </Typography>
       </Button>
       <Menu
         id="basic-menu"

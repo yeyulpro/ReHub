@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Domain
 {
+    [Index(nameof(Date))]
     public class Event
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
@@ -23,6 +25,6 @@ namespace Domain
         //navigation properties
         public ICollection<EventAttendee> Attendees { get; set; } = [];
         public ICollection<Comment> Comments { get; set; } = [];
-        
+
     }
 }

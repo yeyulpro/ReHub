@@ -1,18 +1,25 @@
 import { Box, Typography } from "@mui/material";
 import EventCards from "./EventCards";
 import { useEvents } from "../../../lib/hooks/useEvents";
+import { Fragment } from "react/jsx-runtime";
+import { observer } from "mobx-react-lite";
 
-export default function DashboardList() {
-  const { events, isLoading } = useEvents();
+const EventList=observer( function DashboardList() {
+  const { eventsGroup, isLoading } = useEvents();
 
   if (isLoading) return <Typography>Loading...</Typography>;
-  if (!events) return <Typography>No event found.</Typography>;
+  if (!eventsGroup) return <Typography>No event found.</Typography>;
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      {events?.map((evt) => (
-        <EventCards key={evt.id} event={evt} />
+      {eventsGroup?.pages.map((events, index) => (
+        <Fragment key={index}>
+          {events?.items.map((evt) => (
+            <EventCards key={evt.id} event={evt} />
+          ))}
+        </Fragment>
       ))}
     </Box>
   );
-}
+})
+export default EventList

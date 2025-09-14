@@ -8,7 +8,7 @@ function App() {
     <Box sx={{ backgroundColor: "#f1f1f1", height: "100%" }}>
       <CssBaseline />
       <NavBar />
-      <Container maxWidth="xl" sx={{ mt: 3 }}>
+      <Container maxWidth="xl" sx={{ mt: 15}}>
         <Outlet />
       </Container>
     </Box>

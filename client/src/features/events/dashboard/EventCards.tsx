@@ -51,11 +51,14 @@ export default function EventCards({ event }: Props) {
               </Typography>
               <Typography
                 variant="body2"
-                sx={{ color: "text.secondary" }}
+                sx={{ color: "text.secondary", textDecoration: "none" }}
                 component={Link}
                 to={`/profile/${event.hostId}`}
               >
-                Hosted By {event.hostDisplayName}
+                Hosted By{" "}
+                <span style={{ color: "#444444", fontWeight: "bold" }}>
+                  {event.hostDisplayName}
+                </span>
               </Typography>
             </Box>
           </Box>

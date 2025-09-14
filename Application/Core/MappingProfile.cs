@@ -42,6 +42,8 @@ namespace Application
             CreateMap<Comment, CommentDto>()
             .ForMember(d => d.DisplayName, o => o.MapFrom(c => c.User.DisplayName))
             .ForMember(d => d.ImageUrl, o => o.MapFrom(c => c.User.ImageUrl));
+
+            CreateMap<Event, UserEventDto>();
         }
 
     }
