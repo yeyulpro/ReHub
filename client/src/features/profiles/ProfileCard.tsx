@@ -35,25 +35,22 @@ export default function ProfileCard({ profile }: Props) {
             gap: 1,
           }}
         >
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography variant="h5" component="div">
             {profile.displayName}
-            {profile.bio && (
-              <Typography
-                variant="body2"
-                color="initial"
-                sx={{
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {profile?.bio || (
-                  <Typography variant="h6">
-                    dfadklflasdkfa;sleiaweifalsdfjas
-                  </Typography>
-                )}
-              </Typography>
-            )}
+          </Typography>
+
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {profile.bio || "Will be updated..."}
           </Typography>
           {profile.following && (
             <Chip

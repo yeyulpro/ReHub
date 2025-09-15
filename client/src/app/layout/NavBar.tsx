@@ -129,8 +129,22 @@ export default function NavBar() {
                 </Box>
               ) : (
                 <Box sx={{ display: "flex", gap: 3, mr: 3 }}>
-                  <MenuItemLink to="/register">Register</MenuItemLink>
-                  <MenuItemLink to="/login">Login</MenuItemLink>
+                  <MenuItemLink to="/register">
+                    <Typography
+                      variant="h6"
+                      sx={{ color: !currentUser && "#FF9933" }}
+                    >
+                      Register
+                    </Typography>
+                  </MenuItemLink>
+                  <MenuItemLink to="/login">
+                    <Typography
+                      variant="h6"
+                      sx={{ color: !currentUser && "#66FFFF" }}
+                    >
+                      Login
+                    </Typography>
+                  </MenuItemLink>
                 </Box>
               )}
             </Box>

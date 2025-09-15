@@ -45,7 +45,7 @@ export default function EventCards({ event }: Props) {
               <Typography
                 gutterBottom
                 variant="body1"
-                sx={{ fontSize: "1.2rem" }}
+                sx={{ fontSize: "1.2rem", fontWeight: "bold" }}
               >
                 {event.title}
               </Typography>

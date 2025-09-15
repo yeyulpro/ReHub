@@ -6,16 +6,15 @@ import { useLocation, useNavigate } from "react-router";
 export default function ErrorStatus() {
   const navigate = useNavigate();
   const goBack = () => {
-   
-    navigate("/events"); 
- 
+    navigate("/events");
   };
   const location = useLocation();
   const { data, message } = location.state || {};
-const status = data?.status || "Oppose";
-const title = data?.title || "Something went wrong!";
-const infoMessage = message || "Well, this is awkward. The site you're looking for is not here.";
-
+  const status = data?.status || "oopse";
+  const title = data?.title || "Something went wrong!";
+  const infoMessage =
+    message ||
+    "Well, this is awkward. The site you're looking for is not here.";
 
   return (
     <>
@@ -80,8 +79,12 @@ const infoMessage = message || "Well, this is awkward. The site you're looking f
             <Typography variant="h6" sx={{ mt: 2 }}>
               {infoMessage}
             </Typography>
-            <Button  onClick={goBack} sx={{fontSize:'large', color:'#FFFF',bgcolor:'green'}} variant="contained">
-              Back 
+            <Button
+              onClick={goBack}
+              sx={{ fontSize: "large", color: "#FFFF", bgcolor: "green" }}
+              variant="contained"
+            >
+              Back
             </Button>
           </Box>
         </Box>

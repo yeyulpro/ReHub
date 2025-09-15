@@ -13,8 +13,6 @@ namespace Domain
         public required string Body { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        //navigation properties
-
         public required string UserId { get; set; }
         public User User { get; set; } = null!;
         

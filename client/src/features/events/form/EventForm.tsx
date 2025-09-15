@@ -32,7 +32,7 @@ export default function EventForm() {
         description: event.description,
         category: event.category,
         location: {
-          city: event.city ??"",
+          city: event.city ?? "",
           venue: event.venue,
           latitude: event.latitude,
           longitude: event.longitude,
@@ -42,34 +42,34 @@ export default function EventForm() {
   }, [reset, event]);
 
   const onSubmit = async (data: FormSchemaType) => {
-    const { location,  ...rest } = data;
-     if (!location || typeof location !== "object") {
-    console.error("Location must be an object!");
-    return;
-  }
-       const flattenData = {
+    const { location, ...rest } = data;
+    if (!location || typeof location !== "object") {
+      console.error("Location must be an object!");
+      return;
+    }
+    const flattenData = {
       ...rest,
       ...location,
       city: location.city ?? "",
       venue: location.venue ?? "",
       latitude: location.latitude ?? 0,
       longitude: location.longitude ?? 0,
-      category: rest.category.toLowerCase(), 
+      category: rest.category.toLowerCase(),
       date:
         rest.date instanceof Date
           ? rest.date.toISOString()
-          : new Date(rest.date).toISOString(), 
+          : new Date(rest.date).toISOString(),
     };
     try {
       if (event) {
-         updateEvent.mutate(flattenData as unknown as Hub_Event);
+        updateEvent.mutate(flattenData as unknown as Hub_Event);
         // updateEvent.mutate({
         //   ...event,
         //   ...flattenData,
         //   date: rest.date.toISOString(),
         // } as unknown as Hub_Event);
       } else {
-         createEvent.mutate(flattenData as unknown as Hub_Event);
+        createEvent.mutate(flattenData as unknown as Hub_Event);
         // const formattedCategory =
         //   flattenData.category.charAt(0).toUpperCase() +
         //   flattenData.category.slice(1).toLowerCase();
@@ -128,7 +128,12 @@ export default function EventForm() {
         />
 
         <Box sx={{ display: "flex", justifyContent: "end", gap: 3 }}>
-          <Button color="inherit" component={NavLink} to="/events">
+          <Button
+            component={NavLink}
+            to="/events"
+            variant="contained"
+            sx={{ bgcolor: "#D40000", color: "#FFFF" }}
+          >
             Cancel
           </Button>
           <Button type="submit" color="success" variant="contained">
