@@ -5,7 +5,8 @@ import CustomTextField from "../features/events/form/CustomTextField";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginSchemaType } from "../lib/schema/LoginSchema";
 import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
-import { Link,  useNavigate } from "react-router";
+import { Link } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
@@ -19,10 +20,10 @@ export const LoginForm = () => {
     mode: "onTouched",
     resolver: zodResolver(loginSchema),
   });
-  const onSubmit = async (data: LoginSchemaType) => {
+  const onSubmit = (data: LoginSchemaType) => {
     loginUser.mutate(data, {
       onSuccess: () => {
-        navigate("/events");
+      navigate("/events");
       },
     });
   };
