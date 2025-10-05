@@ -74,3 +74,5 @@ jobs:
           slot-name: 'Production'
           package: .
           
+      - name: Show Azure WebApp URL
+        run: echo "App deployed at ${{ steps.deploy-to-webapp.outputs.webapp-url }}"    
