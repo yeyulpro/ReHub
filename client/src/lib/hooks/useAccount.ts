@@ -17,7 +17,8 @@ export const useAccount = () => {
       });
     },
     onSuccess: async () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      await queryClient.invalidateQueries({ queryKey: ["user"] });
+      await navigate('/events');
       
     },
   });

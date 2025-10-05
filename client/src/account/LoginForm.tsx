@@ -6,11 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, LoginSchemaType } from "../lib/schema/LoginSchema";
 import VpnKeyOutlinedIcon from "@mui/icons-material/VpnKeyOutlined";
 import { Link } from "react-router";
-import { useNavigate } from "react-router-dom";
+
 
 export const LoginForm = () => {
-  const navigate = useNavigate();
- 
+
+
   const { loginUser } = useAccount();
   const {
     control,
@@ -20,12 +20,8 @@ export const LoginForm = () => {
     mode: "onTouched",
     resolver: zodResolver(loginSchema),
   });
-  const onSubmit = (data: LoginSchemaType) => {
-    loginUser.mutate(data, {
-      onSuccess: () => {
-      navigate("/events");
-      },
-    });
+  const onSubmit = async (data: LoginSchemaType) => {
+    await loginUser.mutateAsync(data);
   };
   return (
     <Paper
@@ -55,7 +51,7 @@ export const LoginForm = () => {
         }}
       >
         <VpnKeyOutlinedIcon sx={{ fontSize: "130px" }} />
-        <Typography variant="h1" color="initial"sx={{color:'#808080'}}>
+        <Typography variant="h1" color="initial" sx={{ color: "#808080" }}>
           LOG IN
         </Typography>
       </Box>
@@ -79,9 +75,16 @@ export const LoginForm = () => {
       >
         Log In
       </Button>
-      <Typography  color="initial" textAlign={'center'}>
-        Don't you have an account?  
-        <Typography component={Link} to='/register' sx={{textDecoration:'none'}}> Sign up</Typography>
+      <Typography color="initial" textAlign={"center"}>
+        Don't you have an account?
+        <Typography
+          component={Link}
+          to="/register"
+          sx={{ textDecoration: "none" }}
+        >
+          {" "}
+          Sign up
+        </Typography>
       </Typography>
     </Paper>
   );
