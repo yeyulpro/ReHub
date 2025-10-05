@@ -1,6 +1,6 @@
 import { Box, Button, Paper, Typography } from "@mui/material";
 import { Resolver, useForm } from "react-hook-form";
-import { NavLink, useParams } from "react-router";
+import {  useNavigate, useParams } from "react-router";
 import { formSchema, FormSchemaType } from "../../../lib/schema/FormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CustomTextField from "./CustomTextField";
@@ -14,7 +14,7 @@ import { Hub_Event } from "../../../lib/types";
 
 export default function EventForm() {
   const { id } = useParams();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { event, updateEvent, createEvent } = useEvents(id);
 
   const { control, reset, handleSubmit } = useForm<FormSchemaType>({
@@ -129,8 +129,7 @@ export default function EventForm() {
 
         <Box sx={{ display: "flex", justifyContent: "end", gap: 3 }}>
           <Button
-            component={NavLink}
-            to="/events"
+            onClick={()=>navigate(-1)}
             variant="contained"
             sx={{ bgcolor: "#D40000", color: "#FFFF" }}
           >

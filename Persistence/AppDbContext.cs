@@ -25,7 +25,7 @@ namespace Persistence
 
 			builder.Entity<UserFollowing>(x => x.HasKey(e => new { e.ObserverId, e.TargetId }));
 			builder.Entity<UserFollowing>().HasOne(x => x.Observer).WithMany(u => u.Followings).HasForeignKey(x => x.ObserverId).OnDelete(DeleteBehavior.Cascade);
-			builder.Entity<UserFollowing>().HasOne(x => x.Target).WithMany(e => e.Followers).HasForeignKey(x => x.TargetId).OnDelete(DeleteBehavior.Cascade);
+			builder.Entity<UserFollowing>().HasOne(x => x.Target).WithMany(e => e.Followers).HasForeignKey(x => x.TargetId).OnDelete(DeleteBehavior.NoAction);
         }
 	}
 }

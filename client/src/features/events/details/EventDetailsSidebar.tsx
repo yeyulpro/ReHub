@@ -10,6 +10,7 @@ import {
   Grid,
 } from "@mui/material";
 import { Hub_Event } from "../../../lib/types";
+import { Link } from "react-router-dom";
 type Props = {
   event: Hub_Event;
 };
@@ -34,7 +35,7 @@ export default function EventDetailsSidebar({ event }: Props) {
           <Grid container alignItems="center" key={attendee.id}>
             <Grid size={8}>
               <List sx={{ display: "flex", flexDirection: "column" }}>
-                <ListItem>
+                <ListItem component={Link} to={`/profile/${attendee.id}`}>
                   <ListItemAvatar>
                     <Avatar
                       alt={`${attendee.displayName} image`}
