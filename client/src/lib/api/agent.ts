@@ -28,13 +28,14 @@ agent.interceptors.response.use(
           });
           break;
         case 401:
-          router.navigate("/unauthorized", {
-            state: {
-              data,
-              status,
-              message: "Access is denied due to invalid credentials.",
-            },
-          });
+          toast("Not authorized. You need to register", { position: "top-center", autoClose: 4000 })
+          // router.navigate("/unauthorized", {
+          //   state: {
+          //     data,
+          //     status,
+          //     message: "Access is denied due to invalid credentials.",
+          //   },
+          // });
           break;
         case 403:
           router.navigate("/forbidden", {

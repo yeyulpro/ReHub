@@ -17,10 +17,10 @@ export const useAccount = () => {
       });
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["user"] });
-      await navigate('/events');
-      
+      await queryClient.invalidateQueries({ queryKey: ["user"] });     
+      await navigate('/events');      
     },
+    
   });
 
   const registerUser = useMutation({

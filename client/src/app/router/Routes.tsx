@@ -4,7 +4,7 @@ import HomePage from "../../features/home/HomePage";
 import EventDashboard from "../../features/events/dashboard/EventDashboard";
 import EventForm from "../../features/events/form/EventForm";
 import EventDetailPage from "../../features/events/details/EventDetailPage";
-// import MainHome from "../layout/MainHome";
+
 import ErrorStatus from "../../features/errors/ErrorStatus";
 import { LoginForm } from "../../account/LoginForm";
 import RequireAuth from "./RequireAuth";
