@@ -50,10 +50,10 @@ export default function EventForm() {
     const flattenData = {
       ...rest,
       ...location,
-      city: location.city ?? "",
-      venue: location.venue ?? "",
-      latitude: location.latitude ?? 0,
-      longitude: location.longitude ?? 0,
+      city: location.city ?? "Toronto",
+      venue: location.venue ?? "Toronto",
+      latitude: location.latitude ?? 43.65107,
+      longitude: location.longitude ??-79.347015,
       category: rest.category.toLowerCase(),
       date:
         rest.date instanceof Date

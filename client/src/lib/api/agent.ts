@@ -12,7 +12,7 @@ agent.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.log("axios error", error);
+    console.log("axios error", error);  // line 15
     if (error.response) {
       const { data, status } = error.response;
 
@@ -67,6 +67,7 @@ agent.interceptors.response.use(
           break;
       }
     }
+    return Promise.reject(error); 
   }
 );
 

@@ -17,7 +17,7 @@ export default function EventDetailHeader({ event }: Props) {
       <Card sx={{ position: "relative", height: 600 }} elevation={8}>
         <CardMedia
           component="img"
-          alt="green iguana"
+          alt="event"
           image={`/images/${event.category.toLowerCase()}.jpg`}
         />
         {event.isCancelled ? (
