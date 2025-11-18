@@ -1,36 +1,22 @@
-
-import { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { NavLink } from "react-router";
 
 export default function HomePage() {
-  const [videoLoaded, setVideoLoaded] = useState(false);
-
   return (
-    <Box sx={{ position: "absolute", width: "100vw", height: "100vh", overflow: "hidden" }}>
-      {/* 썸네일 이미지: 동영상 로딩 전 표시 */}
-      {!videoLoaded && (
-        <img
-          src="/mainHome-poster.jpg"
-          alt="Intro"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            position: "absolute",
-            top: 0,
-            left: 0,
-          }}
-        />
-      )}
-
+    <Box
+      sx={{
+        position: "absolute",
+        width: "100vw",
+        height: "100vh",
+        overflow: "hidden",
+      }}
+    >
       {/* 동영상 */}
       <video
         autoPlay
         loop
         muted
         playsInline
-        onLoadedData={() => setVideoLoaded(true)}
         style={{
           width: "100%",
           height: "100%",
@@ -40,7 +26,7 @@ export default function HomePage() {
           left: 0,
         }}
       >
-        <source src="/mainHome.mp4" type="video/mp4" />
+        <source src="/images/mainHome.mp4" type="video/mp4" />
       </video>
 
       {/* 반투명 오버레이 */}
