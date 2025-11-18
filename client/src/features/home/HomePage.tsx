@@ -11,7 +11,7 @@ export default function HomePage() {
         overflow: "hidden",
       }}
     >
-      {/* 동영상 */}
+     
       <video
         autoPlay
         loop
@@ -26,10 +26,10 @@ export default function HomePage() {
           left: 0,
         }}
       >
-        <source src="/images/mainHome.mp4" type="video/mp4" />
+        <source src="/mainHome.mp4" type="video/mp4" />
       </video>
 
-      {/* 반투명 오버레이 */}
+     
       <Box
         sx={{
           position: "absolute",
