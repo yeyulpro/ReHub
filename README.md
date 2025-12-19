@@ -81,3 +81,31 @@ This structure ensures:
 - Loose coupling
 - Clear separation of concerns
 - Easier testing and future scalability
+
+
+## Program.cs Overview
+
+In `Program.cs`, there are two main sections: **Add Services to the Container** and **Configure the HTTP Request Pipeline**.
+
+---
+
+### 1️⃣ Add Services to the Container
+
+- When we need functionality, we create a **class** that provides it.
+- To use the class, we rely on **Dependency Injection (DI)**.
+- The framework automatically **creates an instance** of the class when needed and **disposes of it** when no longer used.
+
+**Example:**
+
+```csharp
+builder.Services.AddControllers();
+builder.Services.AddScoped<IUserService, UserService>();
+
+### Initial Setting 
+At the start, `Program.cs` includes only:
+
+```csharp
+builder.Services.AddControllers();
+app.MapControllers();
+AddControllers(): Sets up services and environment for controllers.
+MapControllers(): Maps HTTP requests to controller actions and executes them.
