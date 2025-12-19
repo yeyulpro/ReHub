@@ -126,5 +126,63 @@ bash
 Install-Package Microsoft.EntityFrameworkCore.Design
 
 ---------
+### 2. Create DbContext
+
+Create a class in the Persistence project:
+
+using Microsoft.EntityFrameworkCore;
+
+public class AppDbContext : DbContext
+{
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+    // Add DbSet for each entity
+    public DbSet<ModelClassName> ModelClassNames { get; set; }
+}
+
+
+Register the DbContext in Program.cs of your API project:
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+Configure your connection string in appsettings.json:
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=app.db"
+  }
+}
+-------------
+###3. Install Migration Tools
+Environment	Command
+Visual Studio (PMC)	Install-Package Microsoft.EntityFrameworkCore.Tools
+VS Code / CLI	dotnet tool install --global dotnet-ef
+
+These tools allow you to create migrations, update the database, and scaffold DbContext.
+-----------------
+
+4. Perform Migration
+
+Create a migration:
+
+dotnet ef migrations add InitialCreate -p Persistence -s API
+dotnet build
+
+
+Update the database:
+
+dotnet ef database update -p Persistence -s API
+
+
+After this, the database will be created and ready to use.
+
+
+
+
+
+
+
+
+
+
 
 
