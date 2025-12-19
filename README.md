@@ -109,3 +109,22 @@ builder.Services.AddControllers();
 app.MapControllers();
 AddControllers(): Sets up services and environment for controllers.
 MapControllers(): Maps HTTP requests to controller actions and executes them.
+
+
+=======================================================================
+## Database Setup with Entity Framework Core
+
+This project uses **Entity Framework Core (EF Core)** as an ORM to manage the database.
+
+### 1. Required Packages
+
+**Persistence Project** (for SQLite database):
+```bash
+Install-Package Microsoft.EntityFrameworkCore.Sqlite
+API Project (for code migration):
+bash
+Install-Package Microsoft.EntityFrameworkCore.Design
+
+---------
+
+
