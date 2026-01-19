@@ -1,5 +1,5 @@
 # Demo Link: https://re-hub-portfolio.azurewebsites.net/
-⚡ Work in Progress: New features are currently being implemented.
+🚧 Note: This app is a work in progress, and additional functionality is being added.
 
 # Rehub API
 
