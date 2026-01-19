@@ -1,3 +1,6 @@
+# Demo Link: https://re-hub-portfolio.azurewebsites.net/
+⚡ Work in Progress: New features are currently being implemented.
+
 # Rehub API
 
 This project is an ASP.NET Core Web API built using **Clean Architecture** principles.  
